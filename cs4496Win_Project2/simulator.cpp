@@ -54,9 +54,50 @@ void Simulator::reset() {
 
 void Simulator::simulate() {
     // TODO: Replace the following code
+	/*
     for (int i = 0; i < mParticles.size(); i++) {
         mParticles[i].mPosition[1] -= 0.005;
     }
+	*/
+	//mParticles[0].mPosition[1] -= 0.007;
+	//mParticles[1].mPosition[1] -= 0.010;
+	//mParticles[2].mPosition[1] -= 0.005;
+
+	// Theoretical acceleration of 9.8 m/s
+	double v0 = mParticles[0].mVelocity[1];
+	double x0 = mParticles[0].mPosition[1];
+
+	mParticles[0].mVelocity[1] = v0 + (-1 * 9.8) * mTimeStep;
+	mParticles[0].mPosition[1] = x0 + v0 * mTimeStep + 0.5 * (- 1 * 9.8) * (mTimeStep * mTimeStep);
+
+	// Midpoint method of integration
+	v0 = mParticles[1].mVelocity[1];
+	x0 = mParticles[1].mPosition[1];
+
+	// Calculate velocity final
+	mParticles[1].mVelocity[1] = v0 + (-1 * 9.8) * mTimeStep;
+	double vf = mParticles[1].mVelocity[1];
+
+	//midpoint formula
+	mParticles[1].mPosition[1] = x0 + 0.5 * (v0 + vf) * mTimeStep;
+
+
+	// Explicit Euler method
+	v0 = mParticles[2].mVelocity[1];
+	x0 = mParticles[2].mPosition[1];
+
+	mParticles[2].mPosition[1] = x0 + mTimeStep * v0;
+	mParticles[2].mVelocity[1] = v0 + mTimeStep * (-1 * 9.8);
+	
+
+	// Implicit Euler method
+	/*
+	v0 = mParticles[2].mVelocity[1];
+	x0 = mParticles[2].mPosition[1];
+
+	mParticles[2].mPosition[1] = x0 + mTimeStep * v0;
+	mParticles[2].mVelocity[1] = v0 + mTimeStep * (-1 * 9.8);
+	*/
     
     mElapsedTime += mTimeStep;
 }
